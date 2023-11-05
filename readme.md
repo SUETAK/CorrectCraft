@@ -22,6 +22,12 @@ buf は、buf.gen.yaml を読み込み、その設定に従って、スキーマ
 # ディレクトリ構造について
 
 ## di_container
+依存関係の注入を行うためのディレクトリです。
 ## domain
+ドメイン層のディレクトリです。
+インターフェース層の実装を行うためのディレクトリです。
 ## interfaces
-
+インターフェース層のディレクトリです。
+repository, service などのinterface を置く場所です。
+下記の状態を表現します。
+![img.png](img.png)
