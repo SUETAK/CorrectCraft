@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package learning.v1;
+
+option go_package = "server/interfaces/proto/learning/v1;learningv1";
+
+message AnswerRequest {
+  string sentence = 1;
+}
+
+message AnswerResponse {
+  string sentence = 1;
+}
+
+service LearningService {
+  rpc Answer(AnswerRequest) returns (AnswerResponse) {}
+}

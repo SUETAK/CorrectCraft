@@ -3,11 +3,13 @@ module server
 go 1.20
 
 require (
+	connectrpc.com/connect v1.12.0
 	github.com/uptrace/bun v1.1.16
 	github.com/uptrace/bun/dialect/pgdialect v1.1.16
 	github.com/uptrace/bun/driver/pgdriver v1.1.16
 	github.com/uptrace/bun/extra/bundebug v1.1.16
 	github.com/urfave/cli/v2 v2.25.7
+	google.golang.org/protobuf v1.31.0
 )
 
 require (

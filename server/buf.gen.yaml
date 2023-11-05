@@ -1,0 +1,9 @@
+version: v1
+plugins:
+  # server へのコード出力
+  - plugin: go # go 用の.pb ファイル生成用のプラグイン
+    out: interfaces # 出力先のディレクトリ。
+    opt: paths=source_relative # 出力先のパスまでのたどり方を指定する。今回は相対パス
+  - plugin: connect-go # .connect ファイル生成用のプラグイン
+    out: interfaces
+    opt: paths=source_relative
