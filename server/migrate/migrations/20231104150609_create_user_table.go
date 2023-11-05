@@ -3,7 +3,7 @@ package migrations
 import (
 	"context"
 	"github.com/uptrace/bun"
-	"server/repository/models"
+	"server/domain/repository/models"
 )
 
 func init() {
