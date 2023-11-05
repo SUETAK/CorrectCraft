@@ -4,11 +4,14 @@ go 1.20
 
 require (
 	connectrpc.com/connect v1.12.0
+	github.com/joho/godotenv v1.5.1
+	github.com/rs/cors v1.9.0
 	github.com/uptrace/bun v1.1.16
 	github.com/uptrace/bun/dialect/pgdialect v1.1.16
 	github.com/uptrace/bun/driver/pgdriver v1.1.16
 	github.com/uptrace/bun/extra/bundebug v1.1.16
 	github.com/urfave/cli/v2 v2.25.7
+	golang.org/x/net v0.10.0
 	google.golang.org/protobuf v1.31.0
 )
 
@@ -25,5 +28,6 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/crypto v0.13.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	mellium.im/sasl v0.3.1 // indirect
 )

@@ -19,3 +19,9 @@ buf.gen.yaml は、buf が使用する設定ファイルです。
 buf は、buf.gen.yaml を読み込み、その設定に従って、スキーマ定義ファイルを生成します。
 
 
+# ディレクトリ構造について
+
+## di_container
+## domain
+## interfaces
+
