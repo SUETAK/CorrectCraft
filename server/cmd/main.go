@@ -40,7 +40,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	// DIコンテナを使った依存関係の初期化
-	di.InitLearning(mux, db)
+	di.InitLearning(mux, db, openaiKey)
 	di.InitAuth(mux, db)
 
 	// TODO オリジンを絞る

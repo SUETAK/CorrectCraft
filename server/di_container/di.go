@@ -9,12 +9,14 @@ import (
 	"server/interfaces/proto/learning/v1/learningv1connect"
 )
 
-func InitLearning(mux *http.ServeMux, db *bun.DB) {
+func InitLearning(mux *http.ServeMux, db *bun.DB, key string) {
 	answerRepository := repositoryContainer.NewAnswerRepository(db)
 	userRepository := repositoryContainer.NewUserRepository(db)
+	openAi := NewOpenAIClient(key)
 	learning := NewLearningAPI(
 		userRepository,
 		answerRepository,
+		openAi,
 	)
 	path, handler := learningv1connect.NewLearningServiceHandler(learning)
 	mux.Handle(path, handler)

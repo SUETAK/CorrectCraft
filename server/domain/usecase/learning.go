@@ -3,6 +3,7 @@ package usecase
 import (
 	"connectrpc.com/connect"
 	"context"
+	openAIInterface "server/interfaces/open_ai"
 	learningv1 "server/interfaces/proto/learning/v1"
 	interfaces "server/interfaces/repository"
 )
@@ -11,6 +12,7 @@ type LearningAPI struct {
 	//	依存する層が増えたらここに追加
 	UserRepository   interfaces.UserRepository
 	AnswerRepository interfaces.AnswerRepository
+	OpenAIClient     openAIInterface.OpenAI
 }
 
 func (l LearningAPI) Answer(ctx context.Context, c *connect.Request[learningv1.AnswerRequest]) (*connect.Response[learningv1.AnswerResponse], error) {
