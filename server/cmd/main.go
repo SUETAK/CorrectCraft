@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	address := "0.0.0.0:8000"
+	address := "0.0.0.0:8080"
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
