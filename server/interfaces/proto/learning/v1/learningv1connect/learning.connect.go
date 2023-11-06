@@ -35,11 +35,15 @@ const (
 const (
 	// LearningServiceAnswerProcedure is the fully-qualified name of the LearningService's Answer RPC.
 	LearningServiceAnswerProcedure = "/learning.v1.LearningService/Answer"
+	// LearningServiceCreateAnswerProcedure is the fully-qualified name of the LearningService's
+	// CreateAnswer RPC.
+	LearningServiceCreateAnswerProcedure = "/learning.v1.LearningService/CreateAnswer"
 )
 
 // LearningServiceClient is a client for the learning.v1.LearningService service.
 type LearningServiceClient interface {
 	Answer(context.Context, *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error)
+	CreateAnswer(context.Context, *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error)
 }
 
 // NewLearningServiceClient constructs a client for the learning.v1.LearningService service. By
@@ -57,12 +61,18 @@ func NewLearningServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			baseURL+LearningServiceAnswerProcedure,
 			opts...,
 		),
+		createAnswer: connect.NewClient[v1.AnswerRequest, v1.AnswerResponse](
+			httpClient,
+			baseURL+LearningServiceCreateAnswerProcedure,
+			opts...,
+		),
 	}
 }
 
 // learningServiceClient implements LearningServiceClient.
 type learningServiceClient struct {
-	answer *connect.Client[v1.AnswerRequest, v1.AnswerResponse]
+	answer       *connect.Client[v1.AnswerRequest, v1.AnswerResponse]
+	createAnswer *connect.Client[v1.AnswerRequest, v1.AnswerResponse]
 }
 
 // Answer calls learning.v1.LearningService.Answer.
@@ -70,9 +80,15 @@ func (c *learningServiceClient) Answer(ctx context.Context, req *connect.Request
 	return c.answer.CallUnary(ctx, req)
 }
 
+// CreateAnswer calls learning.v1.LearningService.CreateAnswer.
+func (c *learningServiceClient) CreateAnswer(ctx context.Context, req *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error) {
+	return c.createAnswer.CallUnary(ctx, req)
+}
+
 // LearningServiceHandler is an implementation of the learning.v1.LearningService service.
 type LearningServiceHandler interface {
 	Answer(context.Context, *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error)
+	CreateAnswer(context.Context, *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error)
 }
 
 // NewLearningServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -86,10 +102,17 @@ func NewLearningServiceHandler(svc LearningServiceHandler, opts ...connect.Handl
 		svc.Answer,
 		opts...,
 	)
+	learningServiceCreateAnswerHandler := connect.NewUnaryHandler(
+		LearningServiceCreateAnswerProcedure,
+		svc.CreateAnswer,
+		opts...,
+	)
 	return "/learning.v1.LearningService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case LearningServiceAnswerProcedure:
 			learningServiceAnswerHandler.ServeHTTP(w, r)
+		case LearningServiceCreateAnswerProcedure:
+			learningServiceCreateAnswerHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -101,4 +124,8 @@ type UnimplementedLearningServiceHandler struct{}
 
 func (UnimplementedLearningServiceHandler) Answer(context.Context, *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("learning.v1.LearningService.Answer is not implemented"))
+}
+
+func (UnimplementedLearningServiceHandler) CreateAnswer(context.Context, *connect.Request[v1.AnswerRequest]) (*connect.Response[v1.AnswerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("learning.v1.LearningService.CreateAnswer is not implemented"))
 }
