@@ -7,8 +7,9 @@ import (
 )
 
 // NewLearningAPI 依存する層のインスタンス作成
-func NewLearningAPI(repository interfaces.UserRepository) learningv1connect.LearningServiceHandler {
+func NewLearningAPI(userRepository interfaces.UserRepository, answerRepository interfaces.AnswerRepository) learningv1connect.LearningServiceHandler {
 	return &usecase.LearningAPI{
-		Repository: repository,
+		UserRepository:   userRepository,
+		AnswerRepository: answerRepository,
 	}
 }

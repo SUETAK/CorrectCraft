@@ -6,6 +6,7 @@ import (
 	"server/domain/models"
 )
 
+// UserRepository の依存するmodel が増えたらここに追加する？
 type UserRepository struct {
 	Db *bun.DB
 }

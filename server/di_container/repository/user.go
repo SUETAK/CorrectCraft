@@ -1,4 +1,4 @@
-package di
+package di_container
 
 import (
 	"github.com/uptrace/bun"
@@ -6,7 +6,7 @@ import (
 	interfaces "server/interfaces/repository"
 )
 
-func NewRepository(db *bun.DB) interfaces.UserRepository {
+func NewUserRepository(db *bun.DB) interfaces.UserRepository {
 	return repository.UserRepository{
 		Db: db,
 	}
