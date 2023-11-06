@@ -1,4 +1,4 @@
-package di_container
+package repositoryContainer
 
 import (
 	"github.com/uptrace/bun"
@@ -7,7 +7,7 @@ import (
 )
 
 func NewAnswerRepository(db *bun.DB) interfaces.AnswerRepository {
-	return &repository.AnswerRepository{
+	return repository.AnswerRepository{
 		Db: db,
 	}
 }

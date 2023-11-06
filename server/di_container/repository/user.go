@@ -1,4 +1,4 @@
-package di_container
+package repositoryContainer
 
 import (
 	"github.com/uptrace/bun"
