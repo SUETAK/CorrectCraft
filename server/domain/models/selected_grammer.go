@@ -6,9 +6,9 @@ import "github.com/uptrace/bun"
 type SelectedGrammar struct {
 	bun.BaseModel `bun:"table:selected_grammars,alias:sg"`
 
-	ID       string `bun:"id,pk,type:uuid"`
-	AnswerId string `bun:"type:uuid,column:answer_id"`
-	Grammar  string `bun:"column:notnull,type:varchar(255)"`
+	ID       int64  `bun:"id,pk,autoincrement"`
+	AnswerId int64  `bun:",notnull,column:answer_id"`
+	Grammar  string `bun:",notnull,type:varchar(255)"`
 
 	Answer *Answer `bun:"rel:belongs-to,join:answer_id=id"`
 }
