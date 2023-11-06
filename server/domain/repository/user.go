@@ -19,3 +19,17 @@ func (ur UserRepository) GetAllUser(ctx context.Context) (*models.User, error) {
 	}
 	return user, nil
 }
+
+func (ur UserRepository) CreateUser(ctx context.Context, userName, password string) (*models.User, error) {
+	user := &models.User{
+		UserName: userName,
+		Password: password,
+	}
+
+	_, err := ur.Db.NewInsert().Model(user).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}

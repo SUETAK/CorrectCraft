@@ -41,6 +41,7 @@ func main() {
 
 	// DIコンテナを使った依存関係の初期化
 	di.InitLearning(mux, db)
+	di.InitAuth(mux, db)
 
 	// TODO オリジンを絞る
 	corsHandler := cors.AllowAll().Handler(h2c.NewHandler(mux, &http2.Server{}))

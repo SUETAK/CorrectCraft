@@ -13,7 +13,12 @@ type LearningAPI struct {
 	AnswerRepository interfaces.AnswerRepository
 }
 
-func (l *LearningAPI) CreateAnswer(ctx context.Context, req *connect.Request[learningv1.AnswerRequest]) (*connect.Response[learningv1.AnswerResponse], error) {
+func (l LearningAPI) Answer(ctx context.Context, c *connect.Request[learningv1.AnswerRequest]) (*connect.Response[learningv1.AnswerResponse], error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (l LearningAPI) CreateAnswer(ctx context.Context, req *connect.Request[learningv1.AnswerRequest]) (*connect.Response[learningv1.AnswerResponse], error) {
 
 	err := l.AnswerRepository.CreateAnswer(ctx, req.Msg.Sentence, req.Msg.UserId)
 	if err != nil {
