@@ -30,4 +30,9 @@ buf は、buf.gen.yaml を読み込み、その設定に従って、スキーマ
 インターフェース層のディレクトリです。
 repository, service などのinterface を置く場所です。
 下記の状態を表現します。
+
+
 ![img.png](img.png)
+
+## 各package の関係図
+![img_1.png](img_1.png)
