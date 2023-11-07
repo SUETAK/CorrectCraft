@@ -33,3 +33,12 @@ func (ur UserRepository) CreateUser(ctx context.Context, userName, password stri
 
 	return user, nil
 }
+
+func (ur UserRepository) GetUser(ctx context.Context, userName string) (*models.User, error) {
+	user := new(models.User)
+	err := ur.Db.NewSelect().Model(user).Where("user_name = ?", userName).Scan(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}

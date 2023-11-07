@@ -1,6 +1,7 @@
 package main
 
 import (
+	"connectrpc.com/connect"
 	"context"
 	"database/sql"
 	"github.com/joho/godotenv"
@@ -27,6 +28,15 @@ func main() {
 		log.Fatal("OPENAI_KEY environment variable must be set")
 	}
 
+	issuer := os.Getenv("REPO_NAME")
+	if issuer == "" {
+		log.Fatal("REPO_NAME environment variable must be set")
+	}
+	keyPath := os.Getenv("KEY_PATH")
+	if issuer == "" {
+		log.Fatal("KEY_PATH environment variable must be set")
+	}
+
 	dsn := "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"
 
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
@@ -37,11 +47,13 @@ func main() {
 		log.Fatal(err)
 	}
 
+	interceptor := connect.WithInterceptors(di.NewAuthInterceptor(issuer, keyPath))
+
 	mux := http.NewServeMux()
 
 	// DIコンテナを使った依存関係の初期化
-	di.InitLearning(mux, db, openaiKey)
-	di.InitAuth(mux, db)
+	di.InitLearning(mux, db, openaiKey, interceptor)
+	di.InitAuth(mux, db, issuer, keyPath)
 
 	// TODO オリジンを絞る
 	corsHandler := cors.AllowAll().Handler(h2c.NewHandler(mux, &http2.Server{}))
