@@ -1,12 +1,12 @@
 name: Generate Document
 on:
-  # mainブランチへのpush時に実行。それぞれのブランチに合わせて変更します。
+  # Executes on pushes to the main branch. Modify for other branches as needed.
   push:
     branches:
       - main
   workflow_dispatch:
 
-# 同時実行を許容しない
+# Prevent concurrent executions
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -28,7 +28,7 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Run protoc-gen-doc
         run: |
-          docker run --rm -v $(pwd)/out:/out -v $(pwd)/server/proto:/proto pseudomuto/protoc-gen-doc --proto_path=/proto --doc_opt=html,index.html $(find proto -name "*.proto" | sed "s/server\/proto\///g")
+          docker run --rm -v $(pwd)/out:/out -v $(pwd):/workspace pseudomuto/protoc-gen-doc --proto_path=/workspace/server/proto --doc_opt=html,index.html $(find /workspace/server/proto -name "*.proto")
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
