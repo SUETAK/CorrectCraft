@@ -23,7 +23,20 @@
 buf.gen.yaml は、buf が使用する設定ファイルです。
 buf は、buf.gen.yaml を読み込み、その設定に従って、スキーマ定義ファイルを生成します。
 
+## ドキュメント生成について
+1. protobuf をinstall する
+```shell
+brew install protobuf
+```
 
+2. /server 配下で下記を入力
+```sh
+protoc \
+  --doc_out=./doc \
+  --doc_opt=markdown,index.md \
+  ./**/*.proto
+
+```
 # ディレクトリ構造について
 
 ## di_container
