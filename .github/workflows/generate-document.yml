@@ -28,7 +28,7 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Run protoc-gen-doc
         run: |
-          docker run --rm -v $(pwd)/out:/out -v $(pwd)/proto:/proto pseudomuto/protoc-gen-doc --proto_path=/proto --doc_opt=html,index.html $(find api/proto -name "*.proto" | sed "s/api\/proto\///g")
+          docker run --rm -v $(pwd)/out:/out -v $(pwd)/server/proto:/proto pseudomuto/protoc-gen-doc --proto_path=/proto --doc_opt=html,index.html $(find api/proto -name "*.proto" | sed "s/api\/proto\///g")
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
