@@ -34,7 +34,12 @@ func (l LearningAPI) CreateAnswer(ctx context.Context, req *connect.Request[lear
 		return nil, err
 	}
 
-	res := connect.NewResponse(&learningv1.AnswerResponse{Sentence: "test"})
+	completion, err := l.OpenAIClient.GetCompletion(req.Msg.Sentence, 100)
+	if err != nil {
+		return nil, err
+	}
+
+	res := connect.NewResponse(&learningv1.AnswerResponse{Sentence: completion.Choices[0].Message.Content})
 	res.Header().Set("Learning-Version", "v1")
 	return res, nil
 }
