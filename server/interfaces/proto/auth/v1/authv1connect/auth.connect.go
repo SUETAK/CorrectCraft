@@ -35,11 +35,14 @@ const (
 const (
 	// AuthServiceCreateUserProcedure is the fully-qualified name of the AuthService's CreateUser RPC.
 	AuthServiceCreateUserProcedure = "/auth.v1.AuthService/CreateUser"
+	// AuthServiceLoginProcedure is the fully-qualified name of the AuthService's Login RPC.
+	AuthServiceLoginProcedure = "/auth.v1.AuthService/Login"
 )
 
 // AuthServiceClient is a client for the auth.v1.AuthService service.
 type AuthServiceClient interface {
 	CreateUser(context.Context, *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error)
+	Login(context.Context, *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the auth.v1.AuthService service. By default, it uses
@@ -57,12 +60,18 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			baseURL+AuthServiceCreateUserProcedure,
 			opts...,
 		),
+		login: connect.NewClient[v1.UserRequest, v1.UserResponse](
+			httpClient,
+			baseURL+AuthServiceLoginProcedure,
+			opts...,
+		),
 	}
 }
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
 	createUser *connect.Client[v1.UserRequest, v1.UserResponse]
+	login      *connect.Client[v1.UserRequest, v1.UserResponse]
 }
 
 // CreateUser calls auth.v1.AuthService.CreateUser.
@@ -70,9 +79,15 @@ func (c *authServiceClient) CreateUser(ctx context.Context, req *connect.Request
 	return c.createUser.CallUnary(ctx, req)
 }
 
+// Login calls auth.v1.AuthService.Login.
+func (c *authServiceClient) Login(ctx context.Context, req *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error) {
+	return c.login.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the auth.v1.AuthService service.
 type AuthServiceHandler interface {
 	CreateUser(context.Context, *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error)
+	Login(context.Context, *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -86,10 +101,17 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		svc.CreateUser,
 		opts...,
 	)
+	authServiceLoginHandler := connect.NewUnaryHandler(
+		AuthServiceLoginProcedure,
+		svc.Login,
+		opts...,
+	)
 	return "/auth.v1.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceCreateUserProcedure:
 			authServiceCreateUserHandler.ServeHTTP(w, r)
+		case AuthServiceLoginProcedure:
+			authServiceLoginHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -101,4 +123,8 @@ type UnimplementedAuthServiceHandler struct{}
 
 func (UnimplementedAuthServiceHandler) CreateUser(context.Context, *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("auth.v1.AuthService.CreateUser is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) Login(context.Context, *connect.Request[v1.UserRequest]) (*connect.Response[v1.UserResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("auth.v1.AuthService.Login is not implemented"))
 }
