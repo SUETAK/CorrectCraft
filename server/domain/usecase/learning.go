@@ -11,10 +11,11 @@ import (
 
 type LearningAPI struct {
 	//	依存する層が増えたらここに追加
-	ContextReader    contextkey.IContextReader
-	UserRepository   interfaces.UserRepository
-	AnswerRepository interfaces.AnswerRepository
-	OpenAIClient     openAIInterface.OpenAI
+	ContextReader         contextkey.IContextReader
+	UserRepository        interfaces.UserRepository
+	AnswerRepository      interfaces.AnswerRepository
+	GPTDescribeRepository interfaces.GPTDescribeRepository
+	OpenAIClient          openAIInterface.OpenAI
 }
 
 func (l LearningAPI) Answer(ctx context.Context, c *connect.Request[learningv1.AnswerRequest]) (*connect.Response[learningv1.AnswerResponse], error) {
@@ -29,12 +30,17 @@ func (l LearningAPI) CreateAnswer(ctx context.Context, req *connect.Request[lear
 		return nil, connect.NewError(connect.CodeUnauthenticated, err)
 	}
 
-	err = l.AnswerRepository.CreateAnswer(ctx, req.Msg.Sentence, uid)
+	answerId, err := l.AnswerRepository.CreateAnswer(ctx, req.Msg.Sentence, uid)
 	if err != nil {
 		return nil, err
 	}
 
 	completion, err := l.OpenAIClient.GetCompletion(req.Msg.Sentence, 100)
+	if err != nil {
+		return nil, err
+	}
+
+	err = l.GPTDescribeRepository.CreateGPTDescribe(ctx, answerId, completion.Choices[0].Message.Content)
 	if err != nil {
 		return nil, err
 	}

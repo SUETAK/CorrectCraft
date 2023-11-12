@@ -15,11 +15,13 @@ import (
 func InitLearning(mux *http.ServeMux, db *bun.DB, key string, interceptor connect.Option) {
 	answerRepository := repositoryContainer.NewAnswerRepository(db)
 	userRepository := repositoryContainer.NewUserRepository(db)
+	gptRepository := repositoryContainer.NewGptDescribeRepository(db)
 	reader := contextkey.NewContextReader()
 	openAi := NewOpenAIClient(key)
 	learning := NewLearningAPI(
 		userRepository,
 		answerRepository,
+		gptRepository,
 		openAi,
 		reader,
 	)

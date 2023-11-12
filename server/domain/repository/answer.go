@@ -10,11 +10,11 @@ type AnswerRepository struct {
 	Db *bun.DB
 }
 
-func (a AnswerRepository) CreateAnswer(ctx context.Context, answerSentence, userId string) error {
+func (a AnswerRepository) CreateAnswer(ctx context.Context, answerSentence, userId string) (int64, error) {
 	answer := &models.Answer{Sentence: answerSentence, UserId: userId}
 	_, err := a.Db.NewInsert().Model(answer).Exec(ctx)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	return answer.ID, nil
 }

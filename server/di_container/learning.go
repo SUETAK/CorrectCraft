@@ -9,11 +9,17 @@ import (
 )
 
 // NewLearningAPI 依存する層のインスタンス作成
-func NewLearningAPI(userRepository interfaces.UserRepository, answerRepository interfaces.AnswerRepository, openAIClient openAIInterface.OpenAI, reader contextkey.IContextReader) learningv1connect.LearningServiceHandler {
+func NewLearningAPI(
+	userRepository interfaces.UserRepository,
+	answerRepository interfaces.AnswerRepository,
+	gptRepository interfaces.GPTDescribeRepository,
+	openAIClient openAIInterface.OpenAI,
+	reader contextkey.IContextReader) learningv1connect.LearningServiceHandler {
 	return &usecase.LearningAPI{
-		UserRepository:   userRepository,
-		AnswerRepository: answerRepository,
-		OpenAIClient:     openAIClient,
-		ContextReader:    reader,
+		UserRepository:        userRepository,
+		AnswerRepository:      answerRepository,
+		GPTDescribeRepository: gptRepository,
+		OpenAIClient:          openAIClient,
+		ContextReader:         reader,
 	}
 }

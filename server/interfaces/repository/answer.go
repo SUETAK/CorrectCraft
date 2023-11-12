@@ -5,5 +5,5 @@ import (
 )
 
 type AnswerRepository interface {
-	CreateAnswer(ctx context.Context, answerSentence string, userId string) error
+	CreateAnswer(ctx context.Context, answerSentence string, userId string) (int64, error)
 }
