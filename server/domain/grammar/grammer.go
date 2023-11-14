@@ -23,3 +23,38 @@ func NewGrammar() Grammar {
 		},
 	}
 }
+
+func List() []string {
+	return []string{
+		"present",
+		"past",
+		"past participle",
+		"present participle",
+		"imperative",
+		"infinitive",
+		"gerund",
+		"indicative",
+		"subjunctive",
+		"passive",
+		"active",
+		"perfect",
+		"progressive"}
+}
+
+func RemovedValue(grammars []string) []string {
+	l := List()
+
+	m := make(map[string]bool)
+	for _, v := range grammars {
+		m[v] = true
+	}
+
+	var res []string
+	for _, v := range l {
+		if !m[v] {
+			res = append(res, v)
+		}
+	}
+
+	return res
+}

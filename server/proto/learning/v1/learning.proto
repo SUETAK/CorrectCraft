@@ -7,10 +7,12 @@ option go_package = "server/interfaces/proto/learning/v1;learningv1";
 message AnswerRequest {
   string sentence = 1;
   string user_id = 2;
+  repeated string grammar = 3;
 }
 
 message AnswerResponse {
   string sentence = 1;
+  repeated string grammar = 2;
 }
 
 service LearningService {

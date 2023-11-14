@@ -3,6 +3,7 @@ package usecase
 import (
 	"connectrpc.com/connect"
 	"context"
+	"server/domain/grammar"
 	contextkey "server/interfaces/context_key"
 	openAIInterface "server/interfaces/open_ai"
 	learningv1 "server/interfaces/proto/learning/v1"
@@ -30,6 +31,10 @@ func (l LearningAPI) CreateAnswer(ctx context.Context, req *connect.Request[lear
 		return nil, connect.NewError(connect.CodeUnauthenticated, err)
 	}
 
+	requestGrammars := req.Msg.Grammar
+
+	g := grammar.RemovedValue(requestGrammars)
+
 	answerId, err := l.AnswerRepository.CreateAnswer(ctx, req.Msg.Sentence, uid)
 	if err != nil {
 		return nil, err
@@ -45,7 +50,7 @@ func (l LearningAPI) CreateAnswer(ctx context.Context, req *connect.Request[lear
 		return nil, err
 	}
 
-	res := connect.NewResponse(&learningv1.AnswerResponse{Sentence: completion.Choices[0].Message.Content})
+	res := connect.NewResponse(&learningv1.AnswerResponse{Sentence: completion.Choices[0].Message.Content, Grammar: g})
 	res.Header().Set("Learning-Version", "v1")
 	return res, nil
 }
