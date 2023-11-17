@@ -8,7 +8,7 @@ type SelectedGrammar struct {
 
 	ID       int64  `bun:"id,pk,autoincrement"`
 	AnswerId int64  `bun:",notnull,column:answer_id"`
-	Grammar  string `bun:",notnull,type:varchar(255)"`
+	Grammar  string `bun:",notnull,type:varchar(1024)"`
 
 	Answer *Answer `bun:"rel:belongs-to,join:answer_id=id"`
 }
