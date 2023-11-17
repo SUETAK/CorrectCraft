@@ -40,7 +40,7 @@ func (c *OpenAIClient) GetCompletion(prompt string, maxTokens int) (GptResponse,
 	// system に何をさせたいか
 	userMessage := ChatMessage{
 		Role:    "user",
-		Content: "Evaluate the English text given to you and return it to us in Japanese with good points and areas for improvement.",
+		Content: "Evaluate the English text given to you and return it to us in Japanese with good points and areas for improvement. If there are examples of improvements, please also return the English text at the time of the improvements in addition.",
 	}
 
 	payloadData := &Payload{
