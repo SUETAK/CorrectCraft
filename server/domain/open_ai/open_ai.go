@@ -28,7 +28,7 @@ func (c *OpenAIClient) GetCompletion(prompt string, maxTokens int) (GptResponse,
 	// system の立場を設定
 	systemMessage := ChatMessage{
 		Role:    "system",
-		Content: "you are a good english speaker.",
+		Content: "You are an excellent English teacher.",
 	}
 
 	// 対象にしたい文章
@@ -40,7 +40,7 @@ func (c *OpenAIClient) GetCompletion(prompt string, maxTokens int) (GptResponse,
 	// system に何をさせたいか
 	userMessage := ChatMessage{
 		Role:    "user",
-		Content: "Please convert the following sentence into one that uses a relative pronoun",
+		Content: "Evaluate the English text given to you and return it to us in Japanese with good points and areas for improvement.",
 	}
 
 	payloadData := &Payload{
